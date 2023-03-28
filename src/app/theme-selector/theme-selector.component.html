@@ -1,0 +1,13 @@
+<div class="grid surface-100">
+  <div class="col-12">
+    <b>Wybierz widok</b>
+  </div>
+  <div class="col-12">
+    <p-selectButton
+      [options]="stateOptions"
+      optionLabel="label"
+      optionValue="value"
+      (onChange)="themeChangeHandler($event)"
+    ></p-selectButton>
+  </div>
+</div>
