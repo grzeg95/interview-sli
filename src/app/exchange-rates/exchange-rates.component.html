@@ -1,0 +1,75 @@
+<div class="grid">
+
+  <div class="col-12">
+    <div class="flex justify-content-between">
+      <button pButton label="Clear" class="p-button-outlined" icon="pi pi-filter-slash" (click)="clearRatingTable()"></button>
+      <p-calendar
+        [showIcon]="true"
+        (onSelect)="calendarInputOnSelectHandler($event)"
+        dateFormat="dd.mm.yy"></p-calendar>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <p-table
+      #ratesTable
+      [loading]="tableIsLoading"
+      [value]="rates"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 20]"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="currency">
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                Symbol waluty <p-sortIcon field="currency"></p-sortIcon>
+              </div>
+              <p-columnFilter type="text" field="currency" display="menu"></p-columnFilter>
+            </div>
+          </th>
+
+          <th pSortableColumn="code">
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                Waluta <p-sortIcon field="code"></p-sortIcon>
+              </div>
+              <p-columnFilter type="text" field="code" display="menu"></p-columnFilter>
+            </div>
+          </th>
+
+          <th pSortableColumn="code">
+            <div class="flex justify-content-between align-items-center">
+              <div>
+                Kurs waluty <p-sortIcon field="mid"></p-sortIcon>
+              </div>
+              <p-columnFilter type="text" field="mid" display="menu"></p-columnFilter>
+            </div>
+          </th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rate let-columns="columns">
+        <tr>
+          <td>{{ rate.currency }}</td>
+          <td>{{ rate.code }}</td>
+          <td>{{ rate.mid }}</td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="3">Na podstawie podanej daty nie ma kursów wymiany walut. Wybierz inną datę.</td>
+        </tr>
+      </ng-template>
+
+      <!--Empty left paginator for paginator spacing-->
+      <ng-template pTemplate="paginatorleft"></ng-template>
+
+    </p-table>
+  </div>
+</div>
+
