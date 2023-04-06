@@ -13,24 +13,52 @@ export class ExchangeRatesService {
   ) {
   }
 
-  getRateTable(): Observable<Rate[]> {
+  getRateTable(): Observable<{
+    rates: Rate[],
+    effectiveDate: string
+  }> {
     return this.http.get<RateTable[]>('https://api.nbp.pl/api/exchangerates/tables/A/?format=json').pipe(
       map((rateTables) => {
-        return rateTables[0].rates;
+
+        return {
+          rates: rateTables[0].rates,
+          effectiveDate: rateTables[0].effectiveDate
+        }
       }),
       catchError(() => {
-        return of([])
+
+        const date = new Date();
+        const dateFormatted = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+
+        return of({
+          rates: [],
+          effectiveDate: dateFormatted
+        })
       })
     );
   }
 
-  getRateTableFromDate(date: string): Observable<Rate[]> {
+  getRateTableFromDate(date: string): Observable<{
+    rates: Rate[],
+    effectiveDate: string
+  }> {
     return this.http.get<RateTable[]>(`http://api.nbp.pl/api/exchangerates/tables/A/${date}/?format=json`).pipe(
       map((rateTables) => {
-        return rateTables[0].rates;
+        return {
+          rates: rateTables[0].rates,
+          effectiveDate: date
+        }
       }),
-      catchError(() => {
-        return of([])
+      catchError((error) => {
+
+        if (error.error === '404 NotFound - Not Found - Brak danych') {
+          return of({
+            rates: [],
+            effectiveDate: date
+          })
+        }
+
+        throw error;
       })
     );
   }

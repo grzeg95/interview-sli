@@ -6,7 +6,8 @@
       <p-calendar
         [showIcon]="true"
         (onSelect)="calendarInputOnSelectHandler($event)"
-        dateFormat="dd.mm.yy"></p-calendar>
+        [(ngModel)]="dateValue"
+        dateFormat="dd-mm-yy"></p-calendar>
     </div>
   </div>
 
