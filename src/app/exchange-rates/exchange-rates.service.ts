@@ -4,12 +4,14 @@ import { Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { RateTable } from '../models/rate-table.model';
 import { Rate } from '../models/rate.model';
+import { MessageService } from 'primeng/api';
 
 @Injectable()
 export class ExchangeRatesService {
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private messageService: MessageService
   ) {
   }
 
@@ -57,6 +59,12 @@ export class ExchangeRatesService {
             effectiveDate: date
           })
         }
+
+        this.messageService.add({
+          severity:'error',
+          summary: 'Error',
+          detail: error.error
+        });
 
         throw error;
       })

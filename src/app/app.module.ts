@@ -10,6 +10,8 @@ import {DialogModule} from 'primeng/dialog';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {TableModule} from 'primeng/table';
 import {StoreDevtoolsModule} from "@ngrx/store-devtools";
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 import {AppComponent} from './app.component';
 import {ExchangeRatesComponent} from './exchange-rates/exchange-rates.component';
@@ -37,11 +39,13 @@ import {environment} from '../environments/environment';
     SelectButtonModule,
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
-    TableModule
+    TableModule,
+    ToastModule
   ],
   providers: [
     ExchangeRatesService,
-    ThemeSelectorService
+    ThemeSelectorService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })
