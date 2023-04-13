@@ -1,5 +1,5 @@
 import {HttpClientModule} from '@angular/common/http';
-import {NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -21,6 +21,13 @@ import {ThemeSelectorComponent} from './theme-selector/theme-selector.component'
 import {ThemeSelectorService} from './theme-selector/theme-selector.service';
 import * as fromApp from './store/app.reducer';
 import {environment} from '../environments/environment';
+import {THEME_SELECTOR, ThemeSelector} from "./theme-selector/theme-selector";
+
+function initializeApp(themeSelector: ThemeSelector): () => Promise<any> {
+  return () => Promise.all([
+    themeSelector.setStoredThemeOrDefault()
+  ]);
+}
 
 @NgModule({
   declarations: [
@@ -43,6 +50,12 @@ import {environment} from '../environments/environment';
     ToastModule
   ],
   providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      multi: true,
+      deps: [THEME_SELECTOR]
+    },
     ExchangeRatesService,
     ThemeSelectorService,
     MessageService
