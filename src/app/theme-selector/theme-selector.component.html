@@ -4,10 +4,12 @@
   </div>
   <div class="col-12">
     <p-selectButton
-      [options]="stateOptions"
+      [options]="themeOptions"
       optionLabel="label"
       optionValue="value"
       (onChange)="themeChangeHandler($event)"
+      [(ngModel)]="theme"
+      [disabled]="themeIsLoading"
     ></p-selectButton>
   </div>
 </div>

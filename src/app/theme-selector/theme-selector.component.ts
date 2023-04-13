@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { Theme } from '../models/theme.model';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ThemeSelectorService } from './theme-selector.service';
 
 @Component({
@@ -8,17 +7,28 @@ import { ThemeSelectorService } from './theme-selector.service';
   styleUrls: ['theme-selector.component.scss']
 })
 export class ThemeSelectorComponent {
-  stateOptions: {label: string, value: string}[] = [
-    {label: 'Ciemny', value: Theme.dark},
-    {label: 'Jasny', value: Theme.light}
-  ];
+
+  themeOptions: {label: string, value: string}[] = [];
+
+  theme: string;
+  themeIsLoading = false;
 
   constructor(
-    private themeSelectorService: ThemeSelectorService
+    private themeSelectorService: ThemeSelectorService,
+    private cdr: ChangeDetectorRef
   ) {
+    this.themeOptions = this.themeSelectorService.themes;
+    this.theme = this.themeSelectorService.selectedThemeName;
   }
 
-  themeChangeHandler(event: {originalEvent: PointerEvent, value: Theme}) {
-    this.themeSelectorService.switchTheme(event.value);
+  themeChangeHandler(event: {originalEvent: PointerEvent, value: string}) {
+
+    this.themeIsLoading = true;
+    this.cdr.detectChanges();
+
+    this.themeSelectorService.setTheme(event.value).then((theme) => {
+      this.themeIsLoading = false;
+      this.theme = theme;
+    });
   }
 }

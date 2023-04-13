@@ -18,9 +18,9 @@ import {ExchangeRatesComponent} from './exchange-rates/exchange-rates.component'
 import {ExchangeRatesService} from './exchange-rates/exchange-rates.service';
 import {ExchangeRatesEffects} from './exchange-rates/store/exchange-rates.effects';
 import {ThemeSelectorComponent} from './theme-selector/theme-selector.component';
-import {ThemeSelectorService} from './theme-selector/theme-selector.service';
 import * as fromApp from './store/app.reducer';
 import {environment} from '../environments/environment';
+import {ThemeSelectorModule} from "./theme-selector/theme-selector.module";
 
 @NgModule({
   declarations: [
@@ -40,11 +40,23 @@ import {environment} from '../environments/environment';
     StoreModule.forRoot(fromApp.appReducer),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     TableModule,
-    ToastModule
+    ToastModule,
+    ThemeSelectorModule.forRoot({
+      themes: [
+        {
+          value: 'bootstrap4-dark-purple',
+          label: 'Ciemny'
+        },
+        {
+          value: 'bootstrap4-light-purple',
+          label: 'Jasny'
+        }
+      ],
+      defaultTheme: 'bootstrap4-light-purple'
+    })
   ],
   providers: [
     ExchangeRatesService,
-    ThemeSelectorService,
     MessageService
   ],
   bootstrap: [AppComponent]
